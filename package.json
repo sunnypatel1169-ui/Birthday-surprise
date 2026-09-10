@@ -1,0 +1,11 @@
+{
+  "name": "one-time-birthday-surprise",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A dependency-free, one-time birthday surprise link",
+  "scripts": {
+    "start": "node server.js",
+    "create-link": "node server.js --create-link"
+  },
+  "engines": { "node": ">=18" }
+}

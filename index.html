@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ff7baa" />
+  <title>A little birthday surprise ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pacifico&display=swap');
+    :root { --pink:#ff6fa8; --rose:#ff3f87; --ink:#4a2640; --cream:#fff7f1; --gold:#ffd36b; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; overflow-x:hidden; color:var(--ink); font-family:"DM Sans",sans-serif; background:radial-gradient(circle at 12% 8%,#fff2ac 0 8%,transparent 25%),radial-gradient(circle at 90% 22%,#d8c0ff 0 4%,transparent 23%),linear-gradient(145deg,#ffcae1,#fad4f1 48%,#cdeeff); }
+    button { font:inherit; border:0; cursor:pointer; }
+    .sky { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-1; }
+    .float { position:absolute; animation:drift var(--d) linear infinite; opacity:.75; filter:drop-shadow(0 4px 4px #bf5f9180); }
+    @keyframes drift { from { transform:translateY(110vh) rotate(0deg); } to { transform:translateY(-15vh) rotate(300deg); } }
+    .page { width:min(760px,94vw); margin:0 auto; padding:32px 0 58px; text-align:center; }
+    .panel { display:none; min-height:calc(100vh - 90px); align-content:center; animation:pop .7s cubic-bezier(.2,.9,.3,1); }
+    .panel.active { display:grid; }
+    @keyframes pop { from {opacity:0; transform:translateY(20px) scale(.96)} to {opacity:1; transform:none} }
+    .eyebrow { letter-spacing:.16em; font-size:.73rem; text-transform:uppercase; font-weight:700; color:#b14d7b; }
+    h1,h2 { margin:10px auto; line-height:1.06; }
+    h1 { max-width:650px; font-family:Pacifico,cursive; font-size:clamp(2.6rem,9vw,5.5rem); font-weight:400; color:#df3f7b; text-shadow:0 3px 0 #fff,0 10px 24px #c85c9370; }
+    h2 { font-family:Pacifico,cursive; font-size:clamp(2rem,7vw,3.7rem); color:#d93e79; font-weight:400; }
+    p { max-width:530px; margin:15px auto; font-size:clamp(1rem,3.5vw,1.16rem); line-height:1.65; }
+    .btn { padding:15px 25px; border-radius:999px; color:white; background:linear-gradient(135deg,var(--rose),#a84ee6); box-shadow:0 10px 20px #b6407b50, inset 0 1px #ffffff80; font-weight:700; transition:.25s transform,.25s box-shadow; }
+    .btn:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 14px 28px #b6407b66; }
+    .btn:active { transform:scale(.98); }
+    .start-star { font-size:5rem; display:block; animation:twinkle 1.4s ease-in-out infinite alternate; }
+    @keyframes twinkle { to { transform:rotate(16deg) scale(1.16); filter:drop-shadow(0 0 18px #fff17c); } }
+    .gift-wrap { padding:34px 0 24px; perspective:800px; }
+    .gift { width:184px; height:150px; position:relative; margin:auto; background:linear-gradient(130deg,#ff4d91,#e53076); border-radius:9px; box-shadow:inset -14px -12px #b21f5c55,0 20px 25px #a12a6660; transition:transform .5s; }
+    .gift:hover { transform:rotateY(-10deg) rotateX(6deg) scale(1.04); }
+    .gift:before { content:""; position:absolute; width:30px; inset:0 auto 0 77px; background:#ffd666; box-shadow:inset 3px 0 #fff2a8; }
+    .lid { position:absolute; z-index:2; left:-9px; top:-27px; width:202px; height:38px; border-radius:8px; background:#ff5d9c; box-shadow:inset -10px -7px #c72a6780; transform-origin:20% 100%; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
+    .lid:after { content:"🎀"; position:absolute; top:-39px; left:61px; font-size:59px; filter:drop-shadow(0 4px 2px #92305055); }
+    .gift.open .lid { transform:rotate(-28deg) translate(-29px,-35px); }
+    .gift.open { animation:shake .45s ease-in-out 2; }
+    @keyframes shake { 25%{transform:rotate(4deg)} 75%{transform:rotate(-4deg)} }
+    .hint { color:#9c4b72; font-size:.92rem; }
+    .cake-stage { margin:22px auto; width:240px; height:210px; position:relative; }
+    .plate { position:absolute; bottom:5px; left:0; width:240px; height:24px; border-radius:50%; background:#edb9de; box-shadow:inset 0 -7px #ca7eb1; }
+    .cake { position:absolute; width:180px; height:116px; left:30px; bottom:24px; border-radius:13px 13px 34px 34px; background:repeating-linear-gradient(90deg,#ff9fc4 0 21px,#ffb7d4 21px 42px); box-shadow:inset 0 -12px #e86a9c,0 6px #a8487c40; }
+    .icing { position:absolute; width:180px; height:30px; top:-8px; border-radius:50%; background:#fff1f7; box-shadow:inset 0 -8px #ffd3e5; }
+    .drip { position:absolute; background:#fff1f7; width:18px; border-radius:0 0 10px 10px; height:28px; top:8px; }
+    .drip.one{left:20px}.drip.two{left:78px;height:19px}.drip.three{right:24px;height:35px}
+    .candle { position:absolute; bottom:139px; width:14px; height:49px; border-radius:4px; background:repeating-linear-gradient(45deg,#ffc72e 0 5px,#fff1a8 5px 10px); }
+    .c1{left:63px}.c2{left:113px}.c3{left:163px}
+    .flame { position:absolute; width:15px;height:23px;top:-22px;left:-1px; background:#ffb524; border-radius:80% 15% 80% 15%; transform:rotate(45deg); animation:flicker .6s ease-in-out infinite alternate; box-shadow:0 0 14px #ffbd35; }
+    @keyframes flicker { to{transform:rotate(35deg) scale(.83,1.15); background:#fff09e} }
+    .gallery { margin:24px auto; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:570px; }
+    .photo { aspect-ratio:1; border:3px solid white; border-radius:18px; display:grid; place-items:center; background:linear-gradient(135deg,#ffc6dc,#f7d6ff 48%,#b9e7f8); box-shadow:0 7px 14px #99537a36; color:#a6527c; font-size:.8rem; padding:8px; transform:rotate(var(--r)); }
+    .photo span { font-size:2rem; display:block; }
+    .note { max-width:600px; padding:24px; border-radius:25px; background:#ffffffa6; box-shadow:0 10px 35px #9c52773b; backdrop-filter:blur(8px); }
+    .music { margin:20px auto 0; padding:10px; display:flex; align-items:center; gap:12px; max-width:390px; border-radius:20px; background:#ffffff99; text-align:left; box-shadow:0 6px 20px #9c527735; }
+    .music button { flex:none; width:46px; height:46px; border-radius:50%; background:#e9508b; color:white; font-size:1.05rem; }
+    .music small { color:#84536a; display:block; margin-top:2px; }
+    .confetti { font-size:2.8rem; letter-spacing:.15em; animation:bob 1.8s ease-in-out infinite alternate; }
+    @keyframes bob { to { transform:translateY(-9px) rotate(3deg); } }
+    .tiny { font-size:.8rem; color:#8d5970; margin-top:18px; }
+    .locked { min-height:100vh; display:grid; place-items:center; padding:24px; text-align:center; }
+    .locked-box { max-width:470px; padding:38px 27px; border-radius:28px; background:#ffffffb8; box-shadow:0 16px 42px #9c52775a; backdrop-filter:blur(8px); }
+    @media (max-width:430px) { .page{padding-top:18px}.gallery{gap:8px}.note{padding:20px 16px}.panel{min-height:calc(100vh - 55px)} }
+  </style>
+</head>
+<body>
+  <div class="sky" id="sky"></div>
+  <main class="page">
+    <section class="panel active" id="welcome">
+      <div><span class="start-star">✨</span><p class="eyebrow">A tiny surprise, made with a lot of smiles</p><h1>Hey, someone special…</h1><p>I have a little thing waiting for you. It comes with sparkles, cake, and a very important wish.</p><button class="btn" data-next="gift">Open my surprise ♡</button></div>
+    </section>
+    <section class="panel" id="gift">
+      <div><p class="eyebrow">Step 1 of 3</p><h2>There’s a present for you!</h2><div class="gift-wrap"><button class="gift" id="giftBox" aria-label="Open the gift"><span class="lid"></span></button></div><p class="hint" id="giftHint">Tap the gift box to unwrap it 🎁</p></div>
+    </section>
+    <section class="panel" id="birthday">
+      <div><div class="confetti">🎉 ✨ 🎈</div><p class="eyebrow">Make a wish!</p><h1>Happy Birthday,<br>You! ♡</h1><p>May your day be as bright, fun, and unexpectedly wonderful as your smile.</p><div class="cake-stage" aria-label="Birthday cake"><div class="candle c1"><i class="flame"></i></div><div class="candle c2"><i class="flame"></i></div><div class="candle c3"><i class="flame"></i></div><div class="cake"><div class="icing"></div><i class="drip one"></i><i class="drip two"></i><i class="drip three"></i></div><div class="plate"></div></div><button class="btn" data-next="message">One more little thing →</button></div>
+    </section>
+    <section class="panel" id="message">
+      <div class="note"><p class="eyebrow">A note just for you</p><h2>You deserve lovely things.</h2><p>I hope this year brings you soft moments, loud laughs, little wins, and every reason to feel proud of who you are. Keep being wonderfully, brilliantly you.</p><p>And just so you know: someone out here is very happy you exist. 💗</p><div class="gallery" aria-label="Photo placeholders"><div class="photo" style="--r:-5deg"><span>📷</span>add a photo</div><div class="photo" style="--r:3deg"><span>🌸</span>your memory</div><div class="photo" style="--r:-2deg"><span>💌</span>favourite pic</div></div><p class="tiny">Replace these three cards with photos whenever you want.</p><button class="btn" data-next="final">Final surprise ✨</button></div>
+    </section>
+    <section class="panel" id="final">
+      <div><div class="confetti">💖 ✨ 💖</div><h1>Stay this cute.</h1><p>Today is all about celebrating you — and I hope it feels every bit as special as you are.</p><p class="eyebrow">Happy birthday, someone special ♡</p><div class="music"><button id="musicButton" aria-label="Play music">▶</button><div><b>Your birthday song</b><small id="musicStatus">Add <code>birthday-song.mp3</code> beside this file to play it.</small></div></div><audio id="audio" preload="none"><source src="birthday-song.mp3" type="audio/mpeg"></audio><p class="tiny">Made with a little extra sparkle, just for you.</p><button class="btn" data-next="welcome">Watch again ↻</button></div>
+    </section>
+  </main>
+  <script>
+    const panels = [...document.querySelectorAll('.panel')];
+    function show(id) { panels.forEach(p => p.classList.toggle('active', p.id === id)); window.scrollTo({top:0,behavior:'smooth'}); }
+    // This is a browser-only lock. A server is required to enforce a one-view link across devices.
+    const viewedKey = 'someone-special-birthday-viewed-v1';
+    function lockPage() {
+      document.querySelector('.page').innerHTML = '<section class="locked"><div class="locked-box"><span class="start-star">💌</span><h2>This surprise has been opened.</h2><p>It was made to be a small, one-time moment. ♡</p></div></section>';
+    }
+    if (localStorage.getItem(viewedKey) === 'yes') {
+      lockPage();
+    } else {
+    document.querySelectorAll('[data-next]').forEach(btn => btn.addEventListener('click', () => {
+      // Count the view the moment the recipient chooses to open the surprise.
+      if (btn.dataset.next === 'gift') localStorage.setItem(viewedKey, 'yes');
+      show(btn.dataset.next);
+    }));
+    const gift = document.querySelector('#giftBox');
+    gift.addEventListener('click', () => { if (!gift.classList.contains('open')) { gift.classList.add('open'); document.querySelector('#giftHint').textContent = 'Ta-da! Your birthday wish is inside ✨'; setTimeout(() => show('birthday'), 1000); } });
+    const symbols = ['♡','♥','✦','✧','●']; const sky = document.querySelector('#sky');
+    for(let i=0;i<32;i++){ const e=document.createElement('span'); e.className='float'; e.textContent=symbols[i%symbols.length]; e.style.left=(Math.random()*100)+'vw'; e.style.fontSize=(12+Math.random()*24)+'px'; e.style.setProperty('--d',(8+Math.random()*12)+'s'); e.style.animationDelay=(-Math.random()*16)+'s'; e.style.color=['#ff5e9d','#fff6a0','#b873df','#fff'][i%4]; sky.appendChild(e); }
+    const audio=document.querySelector('#audio'), musicButton=document.querySelector('#musicButton'), musicStatus=document.querySelector('#musicStatus');
+    musicButton.addEventListener('click', async () => { try { if(audio.paused){ await audio.play(); musicButton.textContent='❚❚'; musicStatus.textContent='Now playing your birthday song ♫'; } else { audio.pause(); musicButton.textContent='▶'; musicStatus.textContent='Music paused'; } } catch(e) { musicStatus.textContent='No song found yet — add birthday-song.mp3 beside this file.'; } });
+    audio.addEventListener('ended',()=>{musicButton.textContent='▶';musicStatus.textContent='Play the song again ♫'});
+    }
+  </script>
+</body>
+</html>
