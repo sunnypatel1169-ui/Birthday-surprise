@@ -80,9 +80,22 @@
     <section class="panel" id="message">
       <div class="note"><p class="eyebrow">A note just for you</p><h2>You deserve lovely things.</h2><p>I hope this year brings you endless happiness, beautiful moments, more wins, every reason to feel proud of who you are, and everything you’ve been wishing for. Keep being wonderfully, brilliantly you.</p><p>And just so you know: someone out here is very happy you exist. 💗</p><div class="gallery" aria-label="Photo gallery"><div class="photo" style="--r:-5deg"><img src="image1.jpg.jpeg" alt="A special memory" onload="this.nextElementSibling.hidden=true" onerror="this.remove()"><span class="photo-label"><span>📷</span>add a photo</span></div><div class="photo" style="--r:3deg"><img src="image2.jpg.jpeg" alt="A happy memory" onload="this.nextElementSibling.hidden=true" onerror="this.remove()"><span class="photo-label"><span>🌸</span>add a photo</span></div><div class="photo" style="--r:-2deg"><img src="image3.jpg.jpeg" alt="A favourite moment" onload="this.nextElementSibling.hidden=true" onerror="this.remove()"><span class="photo-label"><span>💌</span>add a photo</span></div></div><p class="tiny">A few sweet little memories ♡</p><button class="btn" data-next="final">Final surprise ✨</button></div>
     </section>
-    <section class="panel" id="final">
-      <div><div class="confetti">💖 ✨ 💖</div><h1>Stay this cute.</h1><p>Today is all about celebrating you — and I hope it feels every bit as special as you are.</p><p class="eyebrow">Happy birthday ♡</p><div class="music"><button id="musicButton" aria-label="Play music">▶</button><div><b>Song that describes you</b><small id="musicStatus">Add <code>      </code> </small></div></div><audio id="audio" preload="none"><source src="Audio1.mp3" type="audio/mpeg"><source src="Audio2.mp3" type="audio/mpeg"></audio><p class="tiny">Made with a little extra sparkle, just for you.</p><button class="btn" data-next="welcome">Watch again ↻</button></div>
-    </section>
+    <div class="music">
+  <button id="prevButton" aria-label="Previous song">⏮</button>
+
+  <button id="musicButton" aria-label="Play music">▶</button>
+
+  <button id="nextButton" aria-label="Next song">⏭</button>
+
+  <div>
+    <b id="songTitle">Song that describes you</b>
+    <small id="musicStatus">Choose a song ♫</small>
+  </div>
+</div>
+
+<audio id="audio" preload="none">
+  <source id="audioSource" src="birthday-song.mp3" type="audio/mpeg">
+</audio>
   </main>
   <script>
     const panels = [...document.querySelectorAll('.panel')];
@@ -104,9 +117,89 @@
     gift.addEventListener('click', () => { if (!gift.classList.contains('open')) { gift.classList.add('open'); document.querySelector('#giftHint').textContent = 'Ta-da! Your birthday wish is inside ✨'; setTimeout(() => show('birthday'), 1000); } });
     const symbols = ['♡','♥','✦','✧','●']; const sky = document.querySelector('#sky');
     for(let i=0;i<32;i++){ const e=document.createElement('span'); e.className='float'; e.textContent=symbols[i%symbols.length]; e.style.left=(Math.random()*100)+'vw'; e.style.fontSize=(12+Math.random()*24)+'px'; e.style.setProperty('--d',(8+Math.random()*12)+'s'); e.style.animationDelay=(-Math.random()*16)+'s'; e.style.color=['#ff5e9d','#fff6a0','#b873df','#fff'][i%4]; sky.appendChild(e); }
-    const audio=document.querySelector('#audio'), musicButton=document.querySelector('#musicButton'), musicStatus=document.querySelector('#musicStatus');
-    musicButton.addEventListener('click', async () => { try { if(audio.paused){ await audio.play(); musicButton.textContent='❚❚'; musicStatus.textContent='Now playing your birthday song ♫'; } else { audio.pause(); musicButton.textContent='▶'; musicStatus.textContent='Music paused'; } } catch(e) { musicStatus.textContent='No song found yet — add birthday-song.mp3 beside this file.'; } });
-    audio.addEventListener('ended',()=>{musicButton.textContent='▶';musicStatus.textContent='Play the song again ♫'});
+    const audio = document.querySelector('#audio');
+const audioSource = document.querySelector('#audioSource');
+
+const musicButton = document.querySelector('#musicButton');
+const prevButton = document.querySelector('#prevButton');
+const nextButton = document.querySelector('#nextButton');
+
+const musicStatus = document.querySelector('#musicStatus');
+const songTitle = document.querySelector('#songTitle');
+
+const songs = [
+  {
+    name: "Song that describes you",
+    file: "Audio1.mp3"
+  },
+  {
+    name: "Our Special Song",
+    file: "Audio2.mp3"
+  },
+  {
+    name: "Another Beautiful Song",
+    file: "third-song.mp3"
+  },
+  {
+    name: "One More For You",
+    file: "fourth-song.mp3"
+  }
+];
+
+let currentSong = 0;
+
+function loadSong(index, autoplay = false) {
+  currentSong = index;
+
+  audio.pause();
+
+  audioSource.src = songs[currentSong].file;
+  audio.load();
+
+  songTitle.textContent = songs[currentSong].name;
+  musicStatus.textContent = "Ready to play ♫";
+  musicButton.textContent = "▶";
+
+  if (autoplay) {
+    audio.play().then(() => {
+      musicButton.textContent = "❚❚";
+      musicStatus.textContent = "Now playing ♫";
+    }).catch(() => {
+      musicStatus.textContent = "Press play to listen ♫";
+    });
+  }
+}
+
+musicButton.addEventListener('click', async () => {
+  try {
+    if (audio.paused) {
+      await audio.play();
+      musicButton.textContent = "❚❚";
+      musicStatus.textContent = "Now playing ♫";
+    } else {
+      audio.pause();
+      musicButton.textContent = "▶";
+      musicStatus.textContent = "Music paused";
+    }
+  } catch (e) {
+    musicStatus.textContent = "Audio file not found.";
+  }
+});
+
+nextButton.addEventListener('click', () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong, true);
+});
+
+prevButton.addEventListener('click', () => {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong, true);
+});
+
+audio.addEventListener('ended', () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong, true);
+});
     }
   </script>
 </body>
