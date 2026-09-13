@@ -123,7 +123,14 @@
   </main>
   <script>
     const panels = [...document.querySelectorAll('.panel')];
-    function show(id) { panels.forEach(p => p.classList.toggle('active', p.id === id)); window.scrollTo({top:0,behavior:'smooth'}); }
+    function show(id) {
+  panels.forEach(p => p.classList.toggle('active', p.id === id));
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  if (id === 'final') {
+    loadSong(0, true);
+  }
+}
     // This is a browser-only lock. A server is required to enforce a one-view link across devices.
     const viewedKey = 'someone-special-birthday-viewed-v1';
     function lockPage() {
@@ -133,10 +140,16 @@
       lockPage();
     } else {
     document.querySelectorAll('[data-next]').forEach(btn => btn.addEventListener('click', () => {
-      // Count the view the moment the recipient chooses to open the surprise.
-      if (btn.dataset.next === 'gift') localStorage.setItem(viewedKey, 'yes');
-      show(btn.dataset.next);
-    }));
+  // Count the view the moment the recipient chooses to open the surprise.
+  if (btn.dataset.next === 'gift') localStorage.setItem(viewedKey, 'yes');
+
+  show(btn.dataset.next);
+
+  // Start the first song when the final surprise opens
+  if (btn.dataset.next === 'final') {
+    loadSong(0, true);
+  }
+}));
     const gift = document.querySelector('#giftBox');
     gift.addEventListener('click', () => { if (!gift.classList.contains('open')) { gift.classList.add('open'); document.querySelector('#giftHint').textContent = 'Ta-da! Your birthday wish is inside ✨'; setTimeout(() => show('birthday'), 1000); } });
     const symbols = ['♡','♥','✦','✧','●']; const sky = document.querySelector('#sky');
