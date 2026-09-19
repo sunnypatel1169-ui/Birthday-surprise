@@ -1437,24 +1437,7 @@
       );
 
 
-      /* AUTO NEXT SONG */
-
-      audio.addEventListener(
-        'ended',
-        () => {
-
-          currentSong =
-            (currentSong + 1) %
-            songs.length;
-
-
-          loadSong(
-            currentSong,
-            true
-          );
-
-        }
-      );
+    
 
     }
 
